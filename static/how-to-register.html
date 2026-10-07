@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Register | Spheronix Hackathon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/premium.css">
+    <style>
+        .timeline {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .step-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            margin-bottom: 1rem;
+            justify-content: center;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--primary, #3b82f6), #1d4ed8);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .step-title {
+            font-size: 1.8rem;
+            margin: 0;
+            background: linear-gradient(to right, #e92a2a, #3289f3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .step-description {
+            text-align: center;
+            color: var(--text-muted, #94a3b8);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            max-width: 700px;
+        }
+
+        .page-header {
+            padding-top: 100px;
+            text-align: center;
+            margin-bottom: -2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background Accents -->
+    <div class="blob-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="new_landing.html">
+                <img src="images/COMPANY LOGO.png" alt="Logo" style="height: 40px; border-radius: 8px;">
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="new_landing.html#about">About</a>
+            <a href="new_landing.html#domains">Domains</a>
+            <a href="new_landing.html#prizes">Prizes</a>
+            <a href="new_landing.html#crew">Crew</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <a href="register.html" class="btn-premium">Register as Nodal Officer / Principal</a>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="page-header reveal">
+        <h2>Registration Process</h2>
+        <p
+            style="color: var(--text-muted, #94a3b8); font-size: 1.2rem; max-width: 600px; margin: 0 auto; margin-top: 10px;">
+            Follow these simple steps to complete your registration for the Spheronix Hackathon 2026.</p>
+
+        <div
+            style="background: rgba(255, 69, 58, 0.1); border: 2px solid #ff453a; border-radius: 12px; max-width: 800px; margin: 30px auto 0; padding: 20px; text-align: left;">
+            <h3 style="color: #ff453a; margin-top: 0; display: flex; align-items: center; gap: 10px;"><i
+                    class="fas fa-exclamation-triangle"></i> Mandatory Nodal Officer Responsibilities</h3>
+            <p style="color: var(--text-main); margin-bottom: 10px;">Please note that <strong>individual student
+                    registrations are NOT permitted</strong>. As the Nodal Officer or Principal, you are fully
+                responsible for the following:</p>
+            <ul style="color: var(--text-main); margin-bottom: 0; line-height: 1.6;">
+                <li>Collecting the details of all participating students from your institution.</li>
+                <li>Filling out and uploading the consolidated bulk Excel sheet.</li>
+                <li>Collecting fees from the students and making a <strong>single, consolidated payment</strong> to the
+                    platform.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="section">
+        <div class="timeline">
+            <!-- Step 1 -->
+            <div class="step-card reveal">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Open the Registration Page</h3>
+                </div>
+                <div class="step-description">
+                    <p>On the Hackathon home page, click <strong>“Register as Nodal / Principal”</strong>.</p>
+                </div>
+                <img src="images/how-to-register/1.png" alt="Step 1">
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-card reveal">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Enter Institution Details</h3>
+                </div>
+                <div class="step-description">
+                    <p>Fill in all required institution details, including:</p>
+                    <ul style="text-align: left; display: inline-block; margin-top: 10px; margin-bottom: 10px;">
+                        <li>State</li>
+                        <li>District</li>
+                        <li>Pincode</li>
+                        <li>College Code</li>
+                        <li>College Name</li>
+                        <li>Affiliated To</li>
+                        <li>Institution Type</li>
+                    </ul>
+                    <p>After entering all the required information, click <strong>“Next Phase”</strong>.</p>
+                </div>
+                <img src="images/how-to-register/2.png" alt="Step 2">
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-card reveal">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Enter Principal & Nodal Officer Details</h3>
+                </div>
+                <div class="step-description">
+                    <p>Select the appropriate <strong>Registration Category</strong> and provide:</p>
+                    <ul style="text-align: left; display: inline-block; margin-top: 10px; margin-bottom: 10px;">
+                        <li>Principal Name</li>
+                        <li>Principal Gmail Address</li>
+                        <li>Principal Mobile Number</li>
+                        <li>Nodal Officer Name</li>
+                        <li>Nodal Officer Gmail Address</li>
+                        <li>Nodal Officer Mobile Number</li>
+                    </ul>
+                    <p>Verify the Principal's email address if required, then click <strong>“Submit
+                            Registration”</strong>.</p>
+                </div>
+                <img src="images/how-to-register/3.png" alt="Step 3">
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step-card reveal">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Registration Confirmation</h3>
+                </div>
+                <div class="step-description">
+                    <p>After successful submission, a <strong>“Registration Successful”</strong> message will be
+                        displayed. Return to the home page using <strong>“Return Home”</strong>.</p>
+                </div>
+                <img src="images/how-to-register/4.png" alt="Step 4">
+            </div>
+
+            <!-- Step 5 -->
+            <div class="step-card reveal">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <h3 class="step-title">Login to the Dashboard</h3>
+                </div>
+                <div class="step-description">
+                    <p>From the home page, click <strong>“Login as Nodal / Principal”</strong>.</p>
+                    <p>Enter your:</p>
+                    <ul style="text-align: left; display: inline-block; margin-top: 10px; margin-bottom: 10px;">
+                        <li><strong>User ID</strong></li>
+                        <li><strong>Password</strong></li>
+                    </ul>
+                    <p>Then click <strong>“Login”</strong>.</p>
+                </div>
+                <img src="images/how-to-register/5.png" alt="Step 5">
+            </div>
+
+            <!-- Step 6 -->
+            <div class="step-card reveal">
+                <div class="step-header">
+                    <div class="step-number">6</div>
+                    <h3 class="step-title"> Login with credentials </h3>
+                </div>
+                <div class="step-description">
+                    <p>For enhanced account security:</p>
+                    <ol style="text-align: left; display: inline-block; margin-top: 10px; margin-bottom: 10px;">
+                        <li>Loign with admin given credentials</li>
+                        <li><strong>User ID</strong></li>
+                        <li><strong>Password</strong></li>
+                    </ol>
+                </div>
+                <img src="images/how-to-register/6.png" alt="Step 6">
+            </div>
+
+            <!-- Step 7 -->
+            <div class="step-card reveal">
+                <div class="step-header">
+                    <div class="step-number">7</div>
+                    <h3 class="step-title">Complete 2FA Verification</h3>
+                </div>
+                <div class="step-description">
+                    <p>On subsequent login, enter the <strong>6-digit code</strong> generated by your authenticator app
+                        and click <strong>“Verify”</strong> to access the dashboard.</p>
+                </div>
+                <img src="images/how-to-register/7.png" alt="Step 7">
+            </div>
+
+            <!-- Step 8 -->
+            <div class="step-card reveal">
+                <div class="step-header">
+                    <div class="step-number">8</div>
+                    <h3 class="step-title">Enter otp from 2FA Verification(authenticator) </h3>
+                </div>
+                <div class="step-description">
+                    <p>In the dashboard:</p>
+                    <ol style="text-align: left; display: inline-block; margin-top: 10px; margin-bottom: 10px;">
+                        <li>It diplay 6 digits code .</li>
+                        <li>Copy the code 6 digit code paste the code in input field.</li>
+                        <li>After enter the code click on verify.</li>
+
+                    </ol>
+                </div>
+                <img src="images/how-to-register/8.png" alt="Step 8">
+            </div>
+
+            <!-- Step 9 -->
+            <div class="step-card reveal">
+                <div class="step-header">
+                    <div class="step-number">9</div>
+                    <h3 class="step-title">Review Student Data</h3>
+                </div>
+                <div class="step-description">
+                    <p>As the Nodal Officer, you must upload all your students at once.</p>
+                    <ol style="text-align: left; display: inline-block; margin-top: 10px; margin-bottom: 10px;">
+                        <li>Download the <strong>Sample Excel</strong> template.</li>
+                        <li>Enter the details of ALL participating students.</li>
+                        <li>Save the file in <strong>CSV, XLSX, or XLS</strong> format.</li>
+                        <li>Upload the completed file under <strong>“Upload Data File”</strong>.</li>
+                        <li>Click <strong>“Process File”</strong> and review the uploaded student details carefully.
+                        </li>
+                    </ol>
+                    <p style="color: #ef4444; margin-top: 10px;"><strong>Important:</strong> You are responsible for
+                        ensuring the accuracy of the student data before submitting.</p>
+                </div>
+                <img src="images/how-to-register/9.png" alt="Step 9">
+            </div>
+
+            <!-- Step 10 -->
+            <div class="step-card reveal">
+                <div class="step-header">
+                    <div class="step-number">10</div>
+                    <h3 class="step-title">Complete Fee Payment</h3>
+                </div>
+                <div class="step-description">
+                    <p>As the Nodal Officer, you must collect the fees from your students and make a
+                        <strong>consolidated payment</strong>.</p>
+                    <ul style="text-align: left; display: inline-block; margin-top: 10px; margin-bottom: 10px;">
+                        <li>The system will automatically calculate the total amount (e.g., 10 students * 399 = ₹3990).
+                        </li>
+                        <li>Choose your preferred payment method (QR Code or Bank Transfer).</li>
+                        <li>Make the total consolidated payment from your account or the institution's account.</li>
+                    </ul>
+                </div>
+                <img src="images/how-to-register/10.png" alt="Step 10">
+            </div>
+
+            <!-- Step 11 -->
+            <div class="step-card reveal">
+                <div class="step-header">
+                    <div class="step-number">11</div>
+                    <h3 class="step-title">Upload Payment Proof</h3>
+                </div>
+                <div class="step-description">
+                    <p>After completing the payment:</p>
+                    <ol style="text-align: left; display: inline-block; margin-top: 10px; margin-bottom: 10px;">
+                        <li>Upload the payment screenshot under <strong>“Payment Proof & Final Submission”</strong>.
+                        </li>
+                        <li>Review all uploaded information carefully.</li>
+                        <li>Tick the confirmation checkbox stating that the payment has been made successfully and the
+                            uploaded details are correct.</li>
+                        <li>Click <strong>“Submit Application”</strong>.</li>
+                    </ol>
+                </div>
+                <img src="images/how-to-register/11.png" alt="Step 11">
+            </div>
+
+            <!-- Step 12 -->
+            <div class="step-card reveal">
+                <div class="step-header">
+                    <div class="step-number">12</div>
+                    <h3 class="step-title">Submission Locked</h3>
+                </div>
+                <div class="step-description">
+                    <p>Once the application is submitted successfully, the application will be <strong>locked</strong>
+                        and cannot be modified.</p>
+                    <p style="color: #ef4444; margin-top: 10px;"><strong>Important:</strong> Please verify all
+                        institution details, student data, and payment information carefully before clicking
+                        <strong>“Submit Application.”</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem; margin-bottom: 2rem;" class="reveal">
+            <a href="register.html" class="btn-premium" style="font-size: 1.2rem; padding: 1rem 3rem;">Ready to
+                Register? Click Here</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="reveal">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="terms-and-conditions.html" class="footer-link">Terms & Conditions</a>
+                <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+                <a href="refund-policy.html" class="footer-link">Refund Policy</a>
+                <a href="cancellation-policy.html" class="footer-link">Cancellation Policy</a>
+                <a href="contact.html" class="footer-link">Contact Us</a>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Spheronix Technology PVT. LTD. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/premium.js"></script>
+</body>
+
+</html>

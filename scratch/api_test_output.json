@@ -1,0 +1,116 @@
+{
+  "_id": "6a5602ff3a0f67c08c3d7cfc",
+  "registrationAmount": 399,
+  "updatedAt": "2026-10-07T08:59:12.609000",
+  "__v": 89,
+  "examDuration": 30,
+  "registrationOpen": true,
+  "resultsOpen": false,
+  "upiId": "334509931804612@CNRB",
+  "bankName": "CANARA BANK",
+  "accountNumber": "120036804612",
+  "ifscCode": "CNRB0000659",
+  "accountHolderName": "SPHERONIX TECHNOLOGY PVT. LTD.",
+  "announcements": [
+    "Hackathon Registrations Are opened . Please Register Every College Principal or Nodal Officer.",
+    "National Level Tech Hackathon \u00b7Phase 1 ends on: 30 September 2026"
+  ],
+  "districtLevelColleges": [
+    "Srinivasa Ramanujan Institute of Technology (SRIT), Anantapur",
+    "P.V.K.K Institute of Technology, Anantapur",
+    "GATES Institute of Technology, Anantapur"
+  ],
+  "stateLevelColleges": [
+    "Thirumala College of Engineering, Palnadu",
+    "PVKK Institute of Technology, Anantapur"
+  ],
+  "emailTemplateBody": "<!-- v9-nlth --><div style=\"font-family:Arial,sans-serif;max-width:620px;margin:0 auto;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;background:#f9f9f9\"><div style=\"background:#18459b;padding:24px 28px;color:white\"><h1 style=\"margin:0;font-size:22px;font-weight:bold\">National Level Tech Hackathon 2026</h1><p style=\"margin:6px 0 0;font-size:13px;opacity:.85\">Official Registration Confirmation</p></div><div style=\"padding:28px;background:white\"><p style=\"margin-top:0;font-size:15px\">Dear <strong>{{participant_name}}</strong>,</p><p style=\"font-size:14px;color:#374151\">Thank you for registering. Your <strong>{{participation_mode}}</strong> registration has been successfully processed and your spot is officially secured.</p><p style=\"font-size:11px;font-weight:bold;color:#18459b;letter-spacing:.8px;margin-bottom:6px;margin-top:20px\">PARTICIPANT DETAILS</p><div style=\"background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:16px;margin-bottom:16px\"><table style=\"width:100%;border-collapse:collapse;font-size:13px\"><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151;width:48%\">Participant ID:</td><td style=\"padding:5px 0;color:#111827\">{{student_id}}</td></tr><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151\">Participant Name:</td><td style=\"padding:5px 0;color:#111827\">{{participant_name}}</td></tr><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151\">Year of Study:</td><td style=\"padding:5px 0;color:#111827\">{{year}}</td></tr><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151\">Email:</td><td style=\"padding:5px 0;color:#111827\">{{email}}</td></tr><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151\">Mobile:</td><td style=\"padding:5px 0;color:#111827\">{{mobile}}</td></tr><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151\">College:</td><td style=\"padding:5px 0;color:#111827\">{{college}}</td></tr></table></div><p style=\"font-size:11px;font-weight:bold;color:#18459b;letter-spacing:.8px;margin-bottom:6px\">REGISTRATION DETAILS</p><div style=\"background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:16px;margin-bottom:16px\"><table style=\"width:100%;border-collapse:collapse;font-size:13px\"><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151;width:48%\">Participation Mode:</td><td style=\"padding:5px 0;color:#111827\">{{participation_mode}}</td></tr><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151\">Team Name:</td><td style=\"padding:5px 0;color:#111827\">{{team_name}}</td></tr><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151\">Team ID:</td><td style=\"padding:5px 0;color:#111827\">{{team_id}}</td></tr><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151\">Challenge Category:</td><td style=\"padding:5px 0;color:#111827\">{{challenge_category}}</td></tr></table></div><p style=\"font-size:11px;font-weight:bold;color:#18459b;letter-spacing:.8px;margin-bottom:6px\">PAYMENT DETAILS</p><div style=\"background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:16px;margin-bottom:20px\"><table style=\"width:100%;border-collapse:collapse;font-size:13px\"><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151;width:48%\">UTR / UPI ID:</td><td style=\"padding:5px 0;color:#111827\">{{utr_upi_id}}</td></tr><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151\">Amount Paid:</td><td style=\"padding:5px 0;color:#16a34a;font-weight:bold\">{{amount}}</td></tr><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151\">Payment Status:</td><td style=\"padding:5px 0;color:#16a34a;font-weight:bold\">{{payment_status}}</td></tr><tr><td style=\"padding:5px 0;font-weight:bold;color:#374151\">Date Processed:</td><td style=\"padding:5px 0;color:#111827\">{{date_processed}}</td></tr></table></div><p style=\"font-size:11px;font-weight:bold;color:#18459b;letter-spacing:.8px;margin-bottom:6px\">TEAM MEMBERS</p><div style=\"background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:16px;margin-bottom:20px;font-size:13px;line-height:1.6\">{{team_members_details}}</div><p style=\"font-size:12px;color:#64748b;background:#fef9c3;border:1px solid #fde68a;border-radius:4px;padding:10px\">&#128206; A PDF receipt is attached to this email for your records.</p><hr style=\"border:0;border-top:1px solid #e2e8f0;margin:24px 0\"><p style=\"margin-bottom:4px;color:#64748b;font-size:13px\">Best regards,</p><p style=\"margin:0;font-weight:bold\">National Level Tech Hackathon Team</p><p style=\"margin:0;color:#64748b;font-size:13px\">Bangalore, India</p></div><div style=\"background:#f1f5f9;padding:14px 28px;border-top:1px solid #e2e8f0;font-size:11px;color:#64748b\">This is an automated transactional email regarding your National Level Tech Hackathon 2026 registration.</div></div>",
+  "emailTemplateSubject": "National Level Tech Hackathon 2026 - Official Registration Confirmation",
+  "andhraBestUniversities": [
+    "Jawaharlal Nehru Technological University Kakinada (JNTUK)",
+    "Adikavi Nannaya University",
+    "Sri Krishnadevaraya University (SKU)",
+    "Aditya University",
+    "Vignan's University",
+    "Godavari Global University"
+  ],
+  "flipImages": [
+    {
+      "id": "flip-1",
+      "url": "images/flip/1.jpeg",
+      "title": "Hackathon Brainstorming",
+      "type": "default"
+    },
+    {
+      "id": "flip-2",
+      "url": "images/flip/2.jpeg",
+      "title": "Team Coding Session",
+      "type": "default"
+    },
+    {
+      "id": "flip-3",
+      "url": "images/flip/3.jpeg",
+      "title": "Collaboration Discussion",
+      "type": "default"
+    },
+    {
+      "id": "flip-4",
+      "url": "images/flip/4.jpeg",
+      "title": "Project Development",
+      "type": "default"
+    },
+    {
+      "id": "flip-5",
+      "url": "images/flip/5.jpeg",
+      "title": "Tech Hackathon Sprint",
+      "type": "default"
+    },
+    {
+      "id": "flip-6",
+      "url": "images/flip/6.jpeg",
+      "title": "Mentorship & Guidance",
+      "type": "default"
+    }
+  ],
+  "andhraUniversities": [
+    "Jawaharlal Nehru Technological University Kakinada (JNTUK)",
+    "Adikavi Nannaya University",
+    "Sri Krishnadevaraya University (SKU)",
+    "Aditya University",
+    "Vignan's University",
+    "Godavari Global University"
+  ],
+  "andhra_best_universities": [
+    "Jawaharlal Nehru Technological University Kakinada (JNTUK)",
+    "Adikavi Nannaya University",
+    "Sri Krishnadevaraya University (SKU)",
+    "Aditya University",
+    "Vignan's University",
+    "Godavari Global University"
+  ],
+  "bestUniversities": [
+    "Jawaharlal Nehru Technological University Kakinada (JNTUK)",
+    "Adikavi Nannaya University",
+    "Sri Krishnadevaraya University (SKU)",
+    "Aditya University",
+    "Vignan's University",
+    "Godavari Global University"
+  ],
+  "universities": [
+    "Jawaharlal Nehru Technological University Kakinada (JNTUK)",
+    "Adikavi Nannaya University",
+    "Sri Krishnadevaraya University (SKU)",
+    "Aditya University",
+    "Vignan's University",
+    "Godavari Global University"
+  ],
+  "universityLevelColleges": [
+    "Jawaharlal Nehru Technological University Kakinada (JNTUK)",
+    "Adikavi Nannaya University",
+    "Sri Krishnadevaraya University (SKU)",
+    "Aditya University",
+    "Vignan's University",
+    "Godavari Global University"
+  ],
+  "announcement": "Hackathon Registrations Are opened . Please Register Every College Principal or Nodal Officer.\nNational Level Tech Hackathon \u00b7Phase 1 ends on: 30 September 2026"
+}
