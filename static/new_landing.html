@@ -189,16 +189,11 @@
             <!-- Image Scroll + Info row -->
             <div class="editorial-row reveal">
                 <div class="editorial-col">
-                    <div class="hero-side-panel">
+                    <div class="hero-side-panel hero-flip-panel">
                         <div class="flipper-container">
                             <div class="panel-image-scroll" id="panelImageScroll">
                                 <!-- Populated dynamically from Admin Dashboard -->
-                                <div class="flip-item"><img src="images/flip/1.jpeg" alt="Event" loading="eager"></div>
-                                <div class="flip-item"><img src="images/flip/2.jpeg" alt="Event" loading="eager"></div>
-                                <div class="flip-item"><img src="images/flip/3.jpeg" alt="Event" loading="lazy"></div>
-                                <div class="flip-item"><img src="images/flip/4.jpeg" alt="Event" loading="lazy"></div>
-                                <div class="flip-item"><img src="images/flip/5.jpeg" alt="Event" loading="lazy"></div>
-                                <div class="flip-item"><img src="images/flip/6.jpeg" alt="Event" loading="lazy"></div>
+
                             </div>
                         </div>
                     </div>
@@ -1277,8 +1272,8 @@
             }
 
             try {
-                const fetchUrl = (window.location.protocol === 'file:' || (window.location.port && window.location.port !== '8000'))
-                    ? 'http://127.0.0.1:8000/api/public-settings?_t=' + Date.now()
+                const fetchUrl = (window.location.protocol === 'file:' || window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1'))
+                    ? 'https://hackathon.spheronixtechnology.in/api/public-settings?_t=' + Date.now()
                     : '/api/public-settings?_t=' + Date.now();
                 const res = await fetch(fetchUrl, { cache: 'no-store' });
                 if (res.ok) {
@@ -1526,6 +1521,7 @@
                     d.style.animation = 'none';
                     d.innerHTML = '<div style="padding: 24px 10px; text-align: center; color: #98A2B3; font-style: italic; font-size: 0.85rem;">No colleges nominated yet.</div>';
                 }
+                
                 if (u && u.innerHTML.includes('Loading...')) {
                     u.classList.remove('scrolling');
                     u.style.animation = 'none';
@@ -1542,6 +1538,7 @@
     </script>
 
     <script src="js/premium.js"></script>
+
 </body>
 
 </html>
