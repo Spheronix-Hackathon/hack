@@ -17,12 +17,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const elSubmissionsListState = document.getElementById('submissionsListState');
     const elSubmissionDetailState = document.getElementById('submissionDetailState');
     const elFlipImagesState = document.getElementById('flipImagesState');
+    const elCollegesManagementState = document.getElementById('collegesManagementState');
     const statusBadge = document.getElementById('statusBadge');
     const nodalOfficerNote = document.getElementById('nodalOfficerNote');
     
     // Buttons
     const btnSubmissions = document.getElementById('btnSubmissions');
     const btnFlipImages = document.getElementById('btnFlipImages');
+    const btnManageColleges = document.getElementById('btnManageColleges');
     const btnNewSubmission = document.getElementById('btnNewSubmission');
     const btnBackToSubmissions = document.getElementById('btnBackToSubmissions');
     const btnCancelSubmission = document.getElementById('btnCancelSubmission');
@@ -60,6 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('dashboardTitle').innerHTML = `<i class="fas fa-tools"></i> Administration Control Center`;
             document.getElementById('dashboardSubtitle').innerHTML = `${displayName} <span style="opacity: 0.5; margin: 0 5px;">|</span> Flip Reel &amp; Submissions Manager`;
             if (btnFlipImages) btnFlipImages.style.display = 'inline-flex';
+            if (btnManageColleges) btnManageColleges.style.display = 'inline-flex';
             if (btnSubmissions) btnSubmissions.style.display = 'inline-flex';
 
             statusBadge.textContent = 'Admin Mode';
@@ -231,6 +234,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (elSubmissionsListState) elSubmissionsListState.style.display = 'none';
         if (elSubmissionDetailState) elSubmissionDetailState.style.display = 'none';
         if (elFlipImagesState) elFlipImagesState.style.display = 'none';
+        if (elCollegesManagementState) elCollegesManagementState.style.display = 'none';
         
         if (el) el.style.display = 'block';
     }
@@ -248,6 +252,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         btnFlipImages.addEventListener('click', () => {
             showState(elFlipImagesState);
             loadAdminFlipImages();
+        });
+    }
+
+    if (btnManageColleges) {
+        btnManageColleges.addEventListener('click', () => {
+            showState(elCollegesManagementState);
+            loadAdminColleges();
         });
     }
 
@@ -572,6 +583,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+        if (validUrls.length === 1) {
+            miniFlipPreviewTrack.style.animation = 'none';
+            miniFlipPreviewTrack.style.justifyContent = 'center';
+            miniFlipPreviewTrack.innerHTML = `
+                <div class="mini-preview-item" style="margin-right: 0; width: 100%; aspect-ratio: 2 / 1;">
+                    <img src="${validUrls[0]}" alt="Banner Preview" style="object-fit: contain;">
+                </div>
+            `;
+            return;
+        }
+
+        miniFlipPreviewTrack.style.animation = '';
+        miniFlipPreviewTrack.style.justifyContent = '';
+
         let base = [...validUrls];
         while (base.length < 5) {
             base = base.concat(validUrls);
@@ -769,4 +794,163 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
+
+    // ==========================================
+    // NOMINATED COLLEGES & INSTITUTIONS MANAGER
+    // ==========================================
+    function updateCollegeCount(textareaEl, countEl) {
+        if (!textareaEl || !countEl) return;
+        const lines = textareaEl.value.split('\n').map(l => l.trim()).filter(Boolean);
+        countEl.textContent = lines.length;
+    }
+
+    function attachQuickAdd(btnId, inputId, textareaId, countId) {
+        const btn = document.getElementById(btnId);
+        const input = document.getElementById(inputId);
+        const textarea = document.getElementById(textareaId);
+        const count = document.getElementById(countId);
+        if (!btn || !input || !textarea) return;
+
+        const doAdd = () => {
+            const val = input.value.trim();
+            if (!val) return;
+            const current = textarea.value.trim();
+            textarea.value = current ? current + '\n' + val : val;
+            input.value = '';
+            updateCollegeCount(textarea, count);
+            input.focus();
+        };
+
+        btn.addEventListener('click', doAdd);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                doAdd();
+            }
+        });
+
+        textarea.addEventListener('input', () => {
+            updateCollegeCount(textarea, count);
+        });
+    }
+
+    function showCollegeStatus(msg, isSuccess) {
+        const el = document.getElementById('collegesStatusMsg');
+        if (!el) return;
+        el.style.display = 'block';
+        el.innerHTML = isSuccess 
+            ? `<i class="fas fa-check-circle" style="margin-right:8px;"></i>${msg}` 
+            : `<i class="fas fa-exclamation-circle" style="margin-right:8px;"></i>${msg}`;
+        if (isSuccess) {
+            el.style.background = '#dcfce7';
+            el.style.color = '#166534';
+            el.style.border = '1px solid #bbf7d0';
+        } else {
+            el.style.background = '#fee2e2';
+            el.style.color = '#991b1b';
+            el.style.border = '1px solid #fecaca';
+        }
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        setTimeout(() => {
+            if (el) el.style.display = 'none';
+        }, 5000);
+    }
+
+    async function loadAdminColleges() {
+        try {
+            const res = await fetch('/api/public-settings?_t=' + Date.now());
+            if (!res.ok) return;
+            const data = await res.json();
+
+            const txtInnov = document.getElementById('txtBestInnovation');
+            const txtEmerg = document.getElementById('txtBestEmerging');
+            const txtEngage = document.getElementById('txtBestEngagement');
+            const txtState = document.getElementById('txtStateColleges');
+            const txtDist = document.getElementById('txtDistrictColleges');
+            const txtUni = document.getElementById('txtUniversities');
+
+            const parseList = (list) => {
+                if (!list) return '';
+                if (Array.isArray(list)) return list.join('\n');
+                return String(list);
+            };
+
+            if (txtInnov) txtInnov.value = parseList(data.bestInnovationColleges || []);
+            if (txtEmerg) txtEmerg.value = parseList(data.bestEmergingTechnologyColleges || data.bestEmergingTechColleges || []);
+            if (txtEngage) txtEngage.value = parseList(data.bestStudentEngagementColleges || []);
+            if (txtState) txtState.value = parseList(data.stateLevelColleges || []);
+            if (txtDist) txtDist.value = parseList(data.districtLevelColleges || []);
+            if (txtUni) txtUni.value = parseList(data.andhraBestUniversities || data.bestUniversities || []);
+
+            updateCollegeCount(txtInnov, document.getElementById('countInnov'));
+            updateCollegeCount(txtEmerg, document.getElementById('countEmerg'));
+            updateCollegeCount(txtEngage, document.getElementById('countEngage'));
+        } catch (err) {
+            console.error('Error loading colleges for admin:', err);
+        }
+    }
+
+    async function saveAdminColleges() {
+        const parseLines = (id) => {
+            const el = document.getElementById(id);
+            if (!el) return [];
+            return el.value.split('\n').map(l => l.trim()).filter(Boolean);
+        };
+
+        const payload = {
+            bestInnovationColleges: parseLines('txtBestInnovation'),
+            bestEmergingTechnologyColleges: parseLines('txtBestEmerging'),
+            bestEmergingTechColleges: parseLines('txtBestEmerging'),
+            bestStudentEngagementColleges: parseLines('txtBestEngagement'),
+            stateLevelColleges: parseLines('txtStateColleges'),
+            districtLevelColleges: parseLines('txtDistrictColleges'),
+            andhraBestUniversities: parseLines('txtUniversities')
+        };
+
+        const saveBtns = [document.getElementById('btnSaveAllColleges'), document.getElementById('btnSaveAllCollegesBottom')].filter(Boolean);
+        saveBtns.forEach(b => {
+            b.disabled = true;
+            b.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        });
+
+        try {
+            const res = await fetch('/api/settings', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                showCollegeStatus('All college nominations successfully saved and live on landing page!', true);
+                await loadAdminColleges();
+            } else {
+                showCollegeStatus(data.detail || 'Could not save college nominations.', false);
+            }
+        } catch (err) {
+            console.error('Error saving colleges:', err);
+            showCollegeStatus('Network/server error while saving college nominations.', false);
+        } finally {
+            saveBtns.forEach(b => {
+                b.disabled = false;
+                b.innerHTML = '<i class="fas fa-save"></i> Save All to Website';
+            });
+        }
+    }
+
+    // Attach Quick Add & Count Handlers
+    attachQuickAdd('btnAddInnov', 'addInnovInput', 'txtBestInnovation', 'countInnov');
+    attachQuickAdd('btnAddEmerg', 'addEmergInput', 'txtBestEmerging', 'countEmerg');
+    attachQuickAdd('btnAddEngage', 'addEngageInput', 'txtBestEngagement', 'countEngage');
+
+    // Attach Save Buttons
+    const btnSaveTop = document.getElementById('btnSaveAllColleges');
+    if (btnSaveTop) btnSaveTop.addEventListener('click', saveAdminColleges);
+
+    const btnSaveBottom = document.getElementById('btnSaveAllCollegesBottom');
+    if (btnSaveBottom) btnSaveBottom.addEventListener('click', saveAdminColleges);
 });
+

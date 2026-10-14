@@ -29,6 +29,8 @@ DEFAULT_FLIP_IMAGES: List[Dict[str, Any]] = [
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg"}
 
 
+import base64
+
 async def get_current_flip_images() -> List[Dict[str, Any]]:
     """Retrieve the current flip images list from the database, or return defaults."""
     doc = await settings_collection.find_one({})
@@ -43,6 +45,20 @@ async def get_current_flip_images() -> List[Dict[str, Any]]:
                     "type": "link",
                 })
             elif isinstance(item, dict):
+                # Auto-sync dataUrl to disk if file does not exist on disk yet
+                url = item.get("url", "")
+                data_url = item.get("dataUrl", "")
+                if url.startswith("images/flip/") and data_url and "," in data_url:
+                    filename = os.path.basename(url)
+                    disk_path = os.path.join(STATIC_FLIP_DIR, filename)
+                    if not os.path.exists(disk_path):
+                        try:
+                            encoded = data_url.split(",", 1)[1]
+                            with open(disk_path, "wb") as f:
+                                f.write(base64.b64decode(encoded))
+                            logger.info(f"Auto-synced dataUrl to local file: {disk_path}")
+                        except Exception as e:
+                            logger.warning(f"Failed to auto-sync dataUrl for {url}: {e}")
                 cleaned.append(item)
         return cleaned
     return list(DEFAULT_FLIP_IMAGES)

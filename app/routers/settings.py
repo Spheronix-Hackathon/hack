@@ -202,6 +202,11 @@ async def get_public_settings():
     if not andhra_universities:
         andhra_universities = await extract_universities_from_db(doc)
 
+    # 3 New Categories
+    best_innovation = normalize_college_list(doc.get("bestInnovationColleges", []))
+    best_emerging = normalize_college_list(doc.get("bestEmergingTechnologyColleges") or doc.get("bestEmergingTechColleges") or [])
+    best_engagement = normalize_college_list(doc.get("bestStudentEngagementColleges", []))
+
     # Format response preserving original fields + providing standardized aliases
     res = make_json_serializable(dict(doc))
     if "_id" in res:
@@ -220,6 +225,12 @@ async def get_public_settings():
     res["andhraUniversities"] = andhra_universities
     res["universities"] = andhra_universities
     res["andhra_best_universities"] = andhra_universities
+
+    # 3 New Nominated College Categories
+    res["bestInnovationColleges"] = best_innovation
+    res["bestEmergingTechnologyColleges"] = best_emerging
+    res["bestEmergingTechColleges"] = best_emerging
+    res["bestStudentEngagementColleges"] = best_engagement
 
     # Hero Banner flip images
     try:
@@ -323,6 +334,20 @@ async def update_settings(request: Request):
         update_data["andhraUniversities"] = found_unis
         update_data["universities"] = found_unis
         update_data["andhra_best_universities"] = found_unis
+
+    # 5. Best Innovation Colleges
+    if "bestInnovationColleges" in body and body["bestInnovationColleges"] is not None:
+        update_data["bestInnovationColleges"] = normalize_college_list(body["bestInnovationColleges"])
+
+    # 6. Best Emerging Technology Colleges
+    if ("bestEmergingTechnologyColleges" in body and body["bestEmergingTechnologyColleges"] is not None) or ("bestEmergingTechColleges" in body and body["bestEmergingTechColleges"] is not None):
+        val = body.get("bestEmergingTechnologyColleges") or body.get("bestEmergingTechColleges")
+        update_data["bestEmergingTechnologyColleges"] = normalize_college_list(val)
+        update_data["bestEmergingTechColleges"] = normalize_college_list(val)
+
+    # 7. Best Student Engagement Colleges
+    if "bestStudentEngagementColleges" in body and body["bestStudentEngagementColleges"] is not None:
+        update_data["bestStudentEngagementColleges"] = normalize_college_list(body["bestStudentEngagementColleges"])
 
     # 5. Preserve any extra keys passed by admin
     for k, v in body.items():

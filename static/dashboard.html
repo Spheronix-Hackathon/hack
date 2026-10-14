@@ -589,6 +589,9 @@
                 <div class="user-id" id="navUserId">Loading...</div>
                 <div class="user-role" id="navUserRole">...</div>
             </div>
+            <button id="btnManageColleges" class="btn-premium" style="padding: 10px 20px; display: none; background: linear-gradient(135deg, #0284c7, #0369a1);">
+                <i class="fas fa-university"></i> Nominated Colleges
+            </button>
             <button id="btnFlipImages" class="btn-premium" style="padding: 10px 20px; display: none; background: linear-gradient(135deg, #7c3aed, #4f46e5);">
                 <i class="fas fa-images"></i> Flip Images
             </button>
@@ -678,6 +681,20 @@
                     </button>
                 </div>
 
+                <!-- Recommended Poster Specifications -->
+                <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px 18px; margin: 18px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 40px; height: 40px; border-radius: 10px; background: #e0e7ff; color: #4338ca; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; flex-shrink: 0;">
+                            <i class="fas fa-ruler-combined"></i>
+                        </div>
+                        <div>
+                            <strong style="color: #1e293b; font-size: 0.95rem; display: block;">Recommended Poster Specifications</strong>
+                            <span style="color: #64748b; font-size: 0.85rem;">Ratio: <strong>2 : 1</strong> (Wide Banner) &bull; Dimensions: <strong>1600 × 800 px</strong> or <strong>1920 × 960 px</strong> &bull; Types: <strong>PNG, WEBP, JPG</strong></span>
+                        </div>
+                    </div>
+                    <span style="background: #eef2ff; color: #4f46e5; font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; border: 1px solid #c7d2fe;">Optimal Display</span>
+                </div>
+
                 <!-- Tab 1: Upload Image File -->
                 <form id="flipUploadForm">
                     <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; align-items: end;">
@@ -733,6 +750,169 @@
                 <div class="flip-admin-grid" id="flipReelGrid">
                     <!-- Populated dynamically with flip image cards -->
                 </div>
+            </div>
+        </div>
+
+        <!-- Admin Nominated Colleges Management State -->
+        <div id="collegesManagementState" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                <div>
+                    <h3 style="margin: 0; color: var(--text-main); font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-university" style="color: #0284c7;"></i> Nominated Institutions &amp; Colleges Manager
+                    </h3>
+                    <p style="margin: 6px 0 0 0; color: var(--text-muted); font-size: 0.95rem;">
+                        Manage the nominated colleges and universities displayed on the landing page across all categories.
+                    </p>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button type="button" id="btnSaveAllColleges" class="btn-submit" style="width: auto; padding: 11px 24px; background: linear-gradient(135deg, #0284c7, #0369a1); display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-save"></i> Save All to Website
+                    </button>
+                    <a href="new_landing.html" target="_blank" class="btn-premium" style="padding: 10px 18px; font-size: 0.9rem; text-decoration: none; background: linear-gradient(135deg, #10b981, #059669);">
+                        <i class="fas fa-eye"></i> Live Landing View
+                    </a>
+                </div>
+            </div>
+
+            <div id="collegesStatusMsg" style="display: none; margin-bottom: 20px; padding: 14px 18px; border-radius: 10px; font-weight: 500;"></div>
+
+            <!-- Top Row: The 3 Requested College Categories -->
+            <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 1.15rem; font-weight: 700; color: #0f172a;">Special Recognition Categories</span>
+                <span style="background: #e0f2fe; color: #0284c7; font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 20px;">Landing Page Row 2</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <!-- 1. Best Innovation Colleges -->
+                <div class="step-section" style="background: #ffffff; padding: 20px; border-radius: 14px; border: 1.5px solid #fed7aa; box-shadow: 0 4px 14px rgba(201, 134, 14, 0.06);">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <div style="width: 36px; height: 36px; background: #FFFBEB; border-radius: 10px; border: 1.5px solid #FDE68A; box-shadow: 0 3px 10px rgba(217,119,6,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fas fa-lightbulb" style="color: #D97706; font-size: 1.2rem;"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; color: #0D1B3E; font-size: 1.05rem; font-weight: 800;">1. Best <span style="color: #D97706;">Innovation</span> Colleges</h4>
+                            <small style="color: var(--text-muted);">Format: College Name, District (one per line)</small>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                            <input type="text" id="addInnovInput" placeholder="e.g. SRIT, Anantapur" style="flex: 1; padding: 9px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;">
+                            <button type="button" id="btnAddInnov" class="btn-submit" style="width: auto; padding: 9px 16px; background: #C9860E; font-size: 0.85rem;">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                        <textarea id="txtBestInnovation" rows="6" placeholder="SRIT, Anantapur&#10;Thirumala College, Palnadu" style="width: 100%; padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-family: monospace; font-size: 0.88rem; resize: vertical; line-height: 1.5;"></textarea>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <small style="color: #64748b;"><span id="countInnov">0</span> institutions listed</small>
+                    </div>
+                </div>
+
+                <!-- 2. Best Emerging Technology Colleges -->
+                <div class="step-section" style="background: #ffffff; padding: 20px; border-radius: 14px; border: 1.5px solid #bfdbfe; box-shadow: 0 4px 14px rgba(15, 49, 114, 0.06);">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <div style="width: 36px; height: 36px; background: #EFF6FF; border-radius: 10px; border: 1.5px solid #BFDBFE; box-shadow: 0 3px 10px rgba(37,99,235,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fas fa-microchip" style="color: #2563EB; font-size: 1.2rem;"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; color: #0D1B3E; font-size: 1.05rem; font-weight: 800;">2. Best <span style="color: #2563EB;">Emerging Tech</span> Colleges</h4>
+                            <small style="color: var(--text-muted);">Format: College Name, District (one per line)</small>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                            <input type="text" id="addEmergInput" placeholder="e.g. PVKK Institute, Anantapur" style="flex: 1; padding: 9px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;">
+                            <button type="button" id="btnAddEmerg" class="btn-submit" style="width: auto; padding: 9px 16px; background: #0F3172; font-size: 0.85rem;">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                        <textarea id="txtBestEmerging" rows="6" placeholder="PVKK Institute, Anantapur&#10;Vignan University, Guntur" style="width: 100%; padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-family: monospace; font-size: 0.88rem; resize: vertical; line-height: 1.5;"></textarea>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <small style="color: #64748b;"><span id="countEmerg">0</span> institutions listed</small>
+                    </div>
+                </div>
+
+                <!-- 3. Best Student Engagement Colleges -->
+                <div class="step-section" style="background: #ffffff; padding: 20px; border-radius: 14px; border: 1.5px solid #a7f3d0; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.06);">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <div style="width: 36px; height: 36px; background: #ECFDF5; border-radius: 10px; border: 1.5px solid #A7F3D0; box-shadow: 0 3px 10px rgba(5,150,105,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fas fa-award" style="color: #059669; font-size: 1.25rem;"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; color: #0D1B3E; font-size: 1.05rem; font-weight: 800;">3. Best <span style="color: #059669;">Student Engagement</span> Colleges</h4>
+                            <small style="color: var(--text-muted);">Format: College Name, District (one per line)</small>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                            <input type="text" id="addEngageInput" placeholder="e.g. JNTUK, Kakinada" style="flex: 1; padding: 9px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;">
+                            <button type="button" id="btnAddEngage" class="btn-submit" style="width: auto; padding: 9px 16px; background: #059669; font-size: 0.85rem;">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                        <textarea id="txtBestEngagement" rows="6" placeholder="Institute of Science & Technology, Nellore&#10;JNTUK, Kakinada" style="width: 100%; padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-family: monospace; font-size: 0.88rem; resize: vertical; line-height: 1.5;"></textarea>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <small style="color: #64748b;"><span id="countEngage">0</span> institutions listed</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Row: State, District, and University Panels -->
+            <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 1.15rem; font-weight: 700; color: #0f172a;">Regional &amp; University Nominations</span>
+                <span style="background: #fed7aa; color: #c2410c; font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 20px;">Landing Page Row 1</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                <!-- State Level Nominated Colleges -->
+                <div class="step-section" style="background: #ffffff; padding: 20px; border-radius: 14px; border: 1.5px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <div style="width: 36px; height: 36px; background: #FFF5F0; border-radius: 10px; border: 1.5px solid #FFD8C9; box-shadow: 0 3px 10px rgba(232,87,26,0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fas fa-landmark" style="color: #E8571A; font-size: 1.2rem;"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; color: #0D1B3E; font-size: 1.05rem; font-weight: 800;"><span style="color: #E8571A;">State Level</span> Nominated Colleges</h4>
+                            <small style="color: var(--text-muted);">One college per line</small>
+                        </div>
+                    </div>
+                    <textarea id="txtStateColleges" rows="5" placeholder="Thirumala College of Engineering, Palnadu&#10;PVKK Institute of Technology, Anantapur" style="width: 100%; padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-family: monospace; font-size: 0.88rem; resize: vertical; line-height: 1.5;"></textarea>
+                </div>
+
+                <!-- District Level Nominated Colleges -->
+                <div class="step-section" style="background: #ffffff; padding: 20px; border-radius: 14px; border: 1.5px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <div style="width: 36px; height: 36px; background: #FFF5F0; border-radius: 10px; border: 1.5px solid #FFD8C9; box-shadow: 0 3px 10px rgba(232,87,26,0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fas fa-map-location-dot" style="color: #E8571A; font-size: 1.15rem;"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; color: #0D1B3E; font-size: 1.05rem; font-weight: 800;"><span style="color: #E8571A;">District Level</span> Nominated Colleges</h4>
+                            <small style="color: var(--text-muted);">One college per line</small>
+                        </div>
+                    </div>
+                    <textarea id="txtDistrictColleges" rows="5" placeholder="SRIT, Anantapur&#10;GATES Institute, Anantapur" style="width: 100%; padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-family: monospace; font-size: 0.88rem; resize: vertical; line-height: 1.5;"></textarea>
+                </div>
+
+                <!-- Andhra Best Universities -->
+                <div class="step-section" style="background: #ffffff; padding: 20px; border-radius: 14px; border: 1.5px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <div style="width: 36px; height: 36px; background: #EEF4FF; border-radius: 10px; border: 1.5px solid #C7D9FE; box-shadow: 0 3px 10px rgba(29,78,216,0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fas fa-university" style="color: #1D4ED8; font-size: 1.15rem;"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; color: #0D1B3E; font-size: 1.05rem; font-weight: 800;">Andhra <span style="color: #1D4ED8;">Best Universities</span></h4>
+                            <small style="color: var(--text-muted);">One university per line</small>
+                        </div>
+                    </div>
+                    <textarea id="txtUniversities" rows="5" placeholder="JNTUK, Kakinada&#10;Vignan's University, Guntur" style="width: 100%; padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-family: monospace; font-size: 0.88rem; resize: vertical; line-height: 1.5;"></textarea>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                <button type="button" id="btnSaveAllCollegesBottom" class="btn-submit" style="width: auto; padding: 12px 28px; background: linear-gradient(135deg, #0284c7, #0369a1); font-size: 1rem;">
+                    <i class="fas fa-save"></i> Save All Changes to Website
+                </button>
             </div>
         </div>
 
