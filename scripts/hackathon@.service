@@ -6,8 +6,8 @@ After=network.target
 Type=simple
 User=ubuntu
 Group=www-data
-WorkingDirectory=/home/ubuntu/hack/hackathon registration
-ExecStart=/bin/bash "/home/ubuntu/hack/hackathon registration/scripts/run_instance.sh" %i
+WorkingDirectory=/home/ubuntu/hack
+ExecStart=/bin/bash /home/ubuntu/hack/scripts/run_instance.sh %i
 Restart=always
 RestartSec=3
 

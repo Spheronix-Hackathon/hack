@@ -14,6 +14,17 @@ echo "=========================================================="
 
 cd "$APP_DIR"
 
+# Ensure .env and venv exist in repo root
+if [ ! -f ".env" ] && [ -f "hackathon registration/.env" ]; then
+    echo "Copying .env from hackathon registration..."
+    cp "hackathon registration/.env" .env
+fi
+
+if [ ! -d "venv" ] && [ -d "hackathon registration/venv" ]; then
+    echo "Copying venv from hackathon registration..."
+    cp -a "hackathon registration/venv" venv
+fi
+
 # 1. Make all helper scripts executable
 chmod +x "$APP_DIR/scripts/"*.sh 2>/dev/null || true
 
