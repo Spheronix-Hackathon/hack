@@ -75,44 +75,12 @@ async def unhandled_exception_handler(_: Request, exc: Exception):
 
 
 @app.get("/")
-async def read_root(request: Request):
-    if settings.queue_enabled:
-        token = request.cookies.get("queue_pass")
-        if not waiting_room.verify_token(token):
-            res = await waiting_room.request_entry()
-            if not res.get("admitted"):
-                return RedirectResponse(url=f"/waiting-room.html?ticket={res['ticket_id']}", status_code=307)
-            resp = RedirectResponse(url="/index.html", status_code=307)
-            resp.set_cookie(
-                key="queue_pass",
-                value=res["token"],
-                max_age=settings.queue_pass_ttl,
-                httponly=False,
-                samesite="lax",
-                secure=settings.is_production,
-            )
-            return resp
+async def read_root():
     return RedirectResponse(url="/index.html")
 
 
 @app.get("/index.html")
-async def read_index(request: Request):
-    if settings.queue_enabled:
-        token = request.cookies.get("queue_pass")
-        if not waiting_room.verify_token(token):
-            res = await waiting_room.request_entry()
-            if not res.get("admitted"):
-                return RedirectResponse(url=f"/waiting-room.html?ticket={res['ticket_id']}", status_code=307)
-            resp = FileResponse("static/index.html")
-            resp.set_cookie(
-                key="queue_pass",
-                value=res["token"],
-                max_age=settings.queue_pass_ttl,
-                httponly=False,
-                samesite="lax",
-                secure=settings.is_production,
-            )
-            return resp
+async def read_index():
     return FileResponse("static/index.html")
 
 
