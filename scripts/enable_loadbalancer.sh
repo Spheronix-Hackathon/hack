@@ -44,6 +44,9 @@ sudo systemctl daemon-reload
 echo "[3/5] Transitioning to 2-instance cluster (ports 8000 & 8001)..."
 sudo systemctl stop hackathon.service 2>/dev/null || true
 sudo systemctl disable hackathon.service 2>/dev/null || true
+sudo fuser -k 8000/tcp 2>/dev/null || true
+sudo fuser -k 8001/tcp 2>/dev/null || true
+sleep 1
 
 # Start cluster instances
 sudo systemctl enable hackathon@8000 hackathon@8001
