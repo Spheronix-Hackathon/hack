@@ -115,8 +115,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const otherBranchWrapper = document.getElementById("other-branch-wrapper");
     const otherBranchInput = document.getElementById("otherBranchName");
     const collegeNameInput = document.getElementById("collegeName");
-    const collegeSearchInput = document.getElementById("collegeSearch");
-    const collegeDropdown = document.getElementById("college-dropdown");
     const otherCollegeWrapper = document.getElementById("other-college-wrapper");
     const otherCollegeInput = document.getElementById("otherCollegeName");
     const cityInput = document.getElementById("city");
@@ -127,6 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const projectSelectedInput = document.getElementById("projectSelected");
     const otherProjectWrapper = document.getElementById("other-project-wrapper");
     const otherProjectInput = document.getElementById("otherProjectSelected");
+    const btnNextStep = document.getElementById("btn-next-step");
 
     const termsAcceptedInput = document.getElementById("termsAccepted");
     const paymentTermsModeText = document.getElementById("payment-terms-mode-text");
@@ -377,7 +376,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                             }
                             if (collegeNameInput && !collegeNameInput.value && d.collegeName && d.collegeName.toLowerCase() !== "other") {
                                 syncHiddenSelectValue(d.collegeName);
-                                collegeSearchInput.value = d.collegeName;
                             }
                             if (projectSelectedInput && !projectSelectedInput.value && d.projectSelected) {
                                 projectSelectedInput.value = d.projectSelected;
@@ -602,87 +600,85 @@ document.addEventListener("DOMContentLoaded", async () => {
             clearTimeout(saveDraftDebounceTimer);
         }
 
-        const userEmail = (currentUser && currentUser.email) ? currentUser.email : (emailInput ? emailInput.value.trim() : "");
-        if (!userEmail) return;
+        try {
+            const userEmail = (currentUser && currentUser.email) ? currentUser.email : (emailInput ? emailInput.value.trim() : "");
+            if (!userEmail) return;
 
-        const mode = document.querySelector('input[name="participationMode"]:checked')?.value || "individual";
+            const mode = document.querySelector('input[name="participationMode"]:checked')?.value || "individual";
 
-        const teamMembers = [];
-        if (mode === "team") {
-            for (let i = 1; i <= teamMemberCount; i++) {
-                const mName = document.getElementById(`member${i}-name`)?.value.trim() || "";
-                const mEmail = document.getElementById(`member${i}-email`)?.value.trim() || "";
-                const mMobile = document.getElementById(`member${i}-mobile`)?.value.trim() || "";
-                const mRoll = document.getElementById(`member${i}-roll`)?.value.trim() || "";
-                if (mName || mEmail || mMobile || mRoll) {
-                    teamMembers.push({
-                        fullName: mName,
-                        email: mEmail,
-                        mobile: mMobile,
-                        rollNumber: mRoll,
-                    });
+            const teamMembers = [];
+            if (mode === "team") {
+                for (let i = 1; i <= teamMemberCount; i++) {
+                    const mName = document.getElementById(`member${i}-name`)?.value.trim() || "";
+                    const mEmail = document.getElementById(`member${i}-email`)?.value.trim() || "";
+                    const mMobile = document.getElementById(`member${i}-mobile`)?.value.trim() || "";
+                    const mRoll = document.getElementById(`member${i}-roll`)?.value.trim() || "";
+                    if (mName || mEmail || mMobile || mRoll) {
+                        teamMembers.push({
+                            fullName: mName,
+                            email: mEmail,
+                            mobile: mMobile,
+                            rollNumber: mRoll,
+                        });
+                    }
                 }
             }
-        }
 
-        // Resolve college name: check collegeName select and collegeSearchInput
-        let rawCollege = (collegeNameInput ? collegeNameInput.value.trim() : "");
-        const searchCollege = (collegeSearchInput ? collegeSearchInput.value.trim() : "");
-        let resolvedCollege = rawCollege;
-        if (!resolvedCollege || resolvedCollege.toLowerCase() === "other") {
-            resolvedCollege = (searchCollege.toLowerCase() !== "other") ? searchCollege : "";
-        } else if (searchCollege && searchCollege.toLowerCase() !== rawCollege.toLowerCase() && searchCollege.toLowerCase() !== "other") {
-            resolvedCollege = searchCollege;
-        }
+            // Resolve college name: select only
+            let resolvedCollege = (collegeNameInput ? collegeNameInput.value.trim() : "");
+            if (resolvedCollege.toLowerCase() === "other") {
+                resolvedCollege = "";
+            }
 
-        // Resolve current year
-        const rawYear = (currentYearInput ? currentYearInput.value.trim() : "");
-        const otherYear = (otherCurrentYearInput ? otherCurrentYearInput.value.trim() : "");
-        let resolvedYear = rawYear;
-        if (rawYear === "Other" && otherYear) {
-            resolvedYear = otherYear;
-        }
+            // Resolve current year
+            const rawYear = (currentYearInput ? currentYearInput.value.trim() : "");
+            const otherYear = (otherCurrentYearInput ? otherCurrentYearInput.value.trim() : "");
+            let resolvedYear = rawYear;
+            if (rawYear === "Other" && otherYear) {
+                resolvedYear = otherYear;
+            }
 
-        // Resolve branch / category
-        const rawBranch = (branchInput ? branchInput.value.trim() : "");
-        const otherBranch = (otherBranchInput ? otherBranchInput.value.trim() : "");
-        let resolvedBranch = rawBranch;
-        if (rawBranch === "Other" && otherBranch) {
-            resolvedBranch = otherBranch;
-        }
+            // Resolve branch / category
+            const rawBranch = (branchInput ? branchInput.value.trim() : "");
+            const otherBranch = (otherBranchInput ? otherBranchInput.value.trim() : "");
+            let resolvedBranch = rawBranch;
+            if (rawBranch === "Other" && otherBranch) {
+                resolvedBranch = otherBranch;
+            }
 
-        // Resolve project / task category
-        const rawProject = (projectSelectedInput ? projectSelectedInput.value.trim() : "");
-        const otherProject = (otherProjectInput ? otherProjectInput.value.trim() : "");
-        let resolvedProject = rawProject;
-        if (rawProject === "Other" && otherProject) {
-            resolvedProject = otherProject;
-        }
+            // Resolve project / task category
+            const rawProject = (projectSelectedInput ? projectSelectedInput.value.trim() : "");
+            const otherProject = (otherProjectInput ? otherProjectInput.value.trim() : "");
+            let resolvedProject = rawProject;
+            if (rawProject === "Other" && otherProject) {
+                resolvedProject = otherProject;
+            }
 
-        const draftPayload = {
-            email: userEmail,
-            fullName: fullNameInput ? fullNameInput.value.trim() : "",
-            mobile: mobileInput ? mobileInput.value.trim() : "",
-            branch: resolvedBranch,
-            otherBranchName: otherBranch,
-            collegeName: resolvedCollege,
-            otherCollegeName: otherCollege,
-            city: cityInput ? cityInput.value.trim() : "",
-            rollNumber: rollNumberInput ? rollNumberInput.value.trim() : "",
-            currentYear: resolvedYear,
-            otherCurrentYear: otherYear,
-            projectSelected: resolvedProject,
-            otherProjectSelected: otherProject,
-            participationMode: mode,
-            registrationDate: registrationDateInput ? registrationDateInput.value.trim() : "",
-            teamName: teamNameInput ? teamNameInput.value.trim() : "",
-            teamMembers: teamMembers,
-            orderId: (currentPayment && currentPayment.orderId) ? currentPayment.orderId : "",
-        };
+            const otherCollege = (otherCollegeInput ? otherCollegeInput.value.trim() : "");
 
-        showAutosaveBadge("saving");
+            const draftPayload = {
+                email: userEmail,
+                fullName: fullNameInput ? fullNameInput.value.trim() : "",
+                mobile: mobileInput ? mobileInput.value.trim() : "",
+                branch: resolvedBranch,
+                otherBranchName: otherBranch,
+                collegeName: resolvedCollege,
+                otherCollegeName: otherCollege,
+                city: cityInput ? cityInput.value.trim() : "",
+                rollNumber: rollNumberInput ? rollNumberInput.value.trim() : "",
+                currentYear: resolvedYear,
+                otherCurrentYear: otherYear,
+                projectSelected: resolvedProject,
+                otherProjectSelected: otherProject,
+                participationMode: mode,
+                registrationDate: registrationDateInput ? registrationDateInput.value.trim() : "",
+                teamName: teamNameInput ? teamNameInput.value.trim() : "",
+                teamMembers: teamMembers,
+                orderId: (currentPayment && currentPayment.orderId) ? currentPayment.orderId : "",
+            };
 
-        try {
+            showAutosaveBadge("saving");
+
             const res = await fetch("/api/save-draft", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -712,11 +708,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function saveFormData() {
         let collegeVal = (collegeNameInput ? collegeNameInput.value.trim() : "");
-        const searchCollege = (collegeSearchInput ? collegeSearchInput.value.trim() : "");
         if (collegeVal.toLowerCase() === "other") collegeVal = "";
-        if (!collegeVal && searchCollege && searchCollege.toLowerCase() !== "other") {
-            collegeVal = searchCollege;
-        }
 
         const data = {
             fullName: fullNameInput ? fullNameInput.value : "",
@@ -724,7 +716,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             branch: branchInput ? branchInput.value : "",
             otherBranchName: otherBranchInput ? otherBranchInput.value.trim() : "",
             collegeName: collegeVal,
-            collegeSearch: searchCollege,
             otherCollegeName: "",
             city: cityInput ? cityInput.value.trim() : "",
             rollNumber: rollNumberInput ? rollNumberInput.value.trim() : "",
@@ -787,17 +778,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                     toggleOtherYearInput(false);
                 }
             }
-            if (data.projectSelected) {
+            if (data.projectSelected && data.projectSelected !== "Other") {
                 projectSelectedInput.value = data.projectSelected;
-                if (data.projectSelected === "Other") {
-                    toggleOtherProjectInput(true);
-                    if (data.otherProjectSelected && otherProjectInput) {
-                        otherProjectInput.value = data.otherProjectSelected;
-                    }
-                } else {
-                    toggleOtherProjectInput(false);
-                }
             }
+            toggleOtherProjectInput(false);
             teamNameInput.value = data.teamName || teamNameInput.value;
 
             if (data.participationMode) {
@@ -831,8 +815,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             updateAddMemberButton();
 
-            if (collegesLoaded) {
-                syncCollegeSearchFromSavedValue();
+            if (collegesLoaded && data.collegeName && collegeNameInput) {
+                syncHiddenSelectValue(data.collegeName);
             }
         } catch (_err) {
             sessionStorage.removeItem(FORM_STORAGE_KEY);
@@ -851,7 +835,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function clearCollegeSelection() {
         if (collegeNameInput) collegeNameInput.value = "";
-        if (collegeSearchInput) collegeSearchInput.value = "";
         if (otherCollegeInput) otherCollegeInput.value = "";
         toggleOtherCollegeInput(false);
     }
@@ -924,22 +907,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function syncHiddenSelectValue(collegeName) {
         const targetName = (collegeName || "").trim();
+        if (!collegeNameInput) return;
         if (!targetName) {
             collegeNameInput.value = "";
             return;
         }
 
-        let option = Array.from(collegeNameInput.options).find((item) => item.value === targetName);
+        let option = Array.from(collegeNameInput.options).find(
+            (item) => item.value && item.value.toLowerCase() === targetName.toLowerCase()
+        );
         if (!option) {
             option = document.createElement("option");
             option.value = targetName;
             option.textContent = targetName;
             collegeNameInput.appendChild(option);
         }
-        collegeNameInput.value = targetName;
+        collegeNameInput.value = option.value;
     }
 
-    async function fetchColleges(queryText = "", maxItems = 500) {
+    async function fetchColleges(queryText = "", maxItems = 2000) {
         const params = new URLSearchParams({ include_other: "false", limit: String(maxItems) });
         const cleaned = (queryText || "").trim();
         if (cleaned) {
@@ -956,124 +942,36 @@ document.addEventListener("DOMContentLoaded", async () => {
         return list.filter(c => c && c.name && c.name.toLowerCase() !== "other" && !c.is_other);
     }
 
-    function setActiveCollegeOption(index) {
-        const options = Array.from(collegeDropdown.querySelectorAll(".college-option:not(.no-results)"));
-        if (!options.length) {
-            activeCollegeIndex = -1;
-            return;
-        }
-
-        if (index < 0) index = options.length - 1;
-        if (index >= options.length) index = 0;
-        activeCollegeIndex = index;
-
-        options.forEach((option, idx) => {
-            option.classList.toggle("active", idx === activeCollegeIndex);
-        });
-
-        options[activeCollegeIndex].scrollIntoView({ block: "nearest" });
-    }
-
-    async function searchCollegesAndRender(queryText) {
-        try {
-            const items = await fetchColleges(queryText, 500);
-            renderCollegeDropdown(items, queryText);
-        } catch (_err) {
-            renderCollegeDropdown([], queryText);
-        }
-    }
-
-    function selectCollege(college) {
-        if (!college || !college.name || college.name.toLowerCase() === "other") {
-            return;
-        }
-        syncHiddenSelectValue(college.name);
-        if (collegeSearchInput) {
-            collegeSearchInput.value = college.name;
-            collegeSearchInput.blur();
-        }
-        hideCollegeDropdown();
-        toggleOtherCollegeInput(false);
-
-        const error = document.getElementById("error-collegeName");
-        if (error) error.textContent = "";
-
-        saveFormData();
-        saveDraftToServer(true);
-    }
-
-    function renderCollegeDropdown(items, queryText = "") {
-        collegeDropdown.innerHTML = "";
-        const filteredItems = (items || []).filter(c => c && c.name && c.name.toLowerCase() !== "other" && !c.is_other);
-        collegeDropdownItems = filteredItems;
-        activeCollegeIndex = -1;
-
-        if (!filteredItems.length) {
-            const empty = document.createElement("button");
-            empty.type = "button";
-            empty.className = "college-option no-results";
-            empty.textContent = "No colleges found in list";
-            empty.disabled = true;
-            collegeDropdown.appendChild(empty);
-        } else {
-            filteredItems.forEach((college, idx) => {
-                const option = document.createElement("button");
-                option.type = "button";
-                option.className = "college-option";
-                option.textContent = college.name;
-                option.dataset.value = college.name;
-                option.addEventListener("mouseenter", () => setActiveCollegeOption(idx));
-                option.addEventListener("mousedown", (e) => {
-                    e.preventDefault();
-                    selectCollege(college);
-                });
-                collegeDropdown.appendChild(option);
-            });
-        }
-
-        collegeDropdown.classList.remove("hidden");
-    }
-
-    function syncCollegeSearchFromSavedValue() {
-        const savedCollege = (collegeNameInput.value || "").trim();
-        if (!savedCollege || savedCollege.toLowerCase() === "other") {
-            clearCollegeSelection();
-            return;
-        }
-
-        const matched = Array.from(collegeNameInput.options).find(
-            opt => opt.value && opt.value.toLowerCase() === savedCollege.toLowerCase() && opt.value.toLowerCase() !== "other"
-        );
-        if (matched) {
-            syncHiddenSelectValue(matched.value);
-            if (collegeSearchInput) collegeSearchInput.value = matched.value;
-        } else {
-            clearCollegeSelection();
-        }
-        toggleOtherCollegeInput(false);
-    }
-
     async function loadColleges() {
         const collegeLoading = document.getElementById("college-loading");
         if (collegeLoading) collegeLoading.style.display = "block";
 
         try {
-            const colleges = await fetchColleges("", 500);
+            const colleges = await fetchColleges("", 2000);
 
-            while (collegeNameInput.options.length > 1) {
-                collegeNameInput.remove(1);
-            }
+            // Sort colleges alphabetically
+            colleges.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
 
-            colleges.forEach((college) => {
-                if (college && college.name && college.name.toLowerCase() !== "other" && !college.is_other) {
-                    const option = document.createElement("option");
-                    option.value = college.name;
-                    option.textContent = college.name;
-                    collegeNameInput.appendChild(option);
+            const currentVal = (collegeNameInput ? collegeNameInput.value : "").trim();
+
+            if (collegeNameInput) {
+                while (collegeNameInput.options.length > 1) {
+                    collegeNameInput.remove(1);
                 }
-            });
 
-            syncCollegeSearchFromSavedValue();
+                colleges.forEach((college) => {
+                    if (college && college.name && college.name.toLowerCase() !== "other" && !college.is_other) {
+                        const option = document.createElement("option");
+                        option.value = college.name;
+                        option.textContent = college.name;
+                        collegeNameInput.appendChild(option);
+                    }
+                });
+
+                if (currentVal && currentVal.toLowerCase() !== "other") {
+                    syncHiddenSelectValue(currentVal);
+                }
+            }
 
             collegesLoaded = true;
             if (collegeLoading) collegeLoading.style.display = "none";
@@ -1105,7 +1003,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 categories.forEach(cat => {
                     const normalized = String(cat || "").trim();
-                    if (normalized) {
+                    if (normalized && normalized.toLowerCase() !== "other") {
                         const { key, display } = getDomainCanonical(normalized);
                         if (key && !seen.has(key)) {
                             seen.add(key);
@@ -1121,11 +1019,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         uniqueCategories.push(display);
                     }
                 });
-
-                // Always append Other option for Task Categories
-                if (!uniqueCategories.some(c => c.toLowerCase() === "other")) {
-                    uniqueCategories.push("Other");
-                }
 
                 // Clear existing options except the first placeholder option
                 while (projectSelectedInput.options.length > 1) {
@@ -1143,14 +1036,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const raw = sessionStorage.getItem(FORM_STORAGE_KEY);
                 if (raw) {
                     const data = JSON.parse(raw);
-                    if (data.projectSelected) {
+                    if (data.projectSelected && data.projectSelected !== "Other") {
                         projectSelectedInput.value = data.projectSelected;
-                        if (data.projectSelected === "Other") {
-                            toggleOtherProjectInput(true);
-                            if (data.otherProjectSelected && otherProjectInput) {
-                                otherProjectInput.value = data.otherProjectSelected;
-                            }
-                        }
                     }
                 }
             }
@@ -1395,15 +1282,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // 5. College Name
         const college = (collegeNameInput ? collegeNameInput.value : "").trim();
-        const searchVal = (collegeSearchInput ? collegeSearchInput.value : "").trim();
-        const matchedCollege = Array.from(collegeNameInput ? collegeNameInput.options : []).find(
-            opt => opt.value && opt.value.toLowerCase() === searchVal.toLowerCase() && opt.value.toLowerCase() !== "other"
-        );
-
-        if (!college || college.toLowerCase() === "other" || !searchVal || !matchedCollege) {
-            markInvalid(collegeSearchInput, "error-collegeName", "Please select your college from the list");
+        if (!college || college.toLowerCase() === "other") {
+            markInvalid(collegeNameInput, "error-collegeName", "Please select your college from the list");
         } else if (showVisualErrors) {
-            setFieldError(collegeSearchInput, "error-collegeName", "");
+            setFieldError(collegeNameInput, "error-collegeName", "");
         }
 
         // 6. City
@@ -1682,7 +1564,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 ? otherCurrentYearInput.value.trim() 
                 : (currentYearInput.options[currentYearInput.selectedIndex]?.text || currentYearInput.value)) 
             : "";
-        const displayCollege = collegeNameInput.value || collegeSearchInput.value || "N/A";
+        const displayCollege = (collegeNameInput ? collegeNameInput.value : "") || "N/A";
         leaderCollegeInfoEl.innerHTML = `<i class="fas fa-university"></i> ${displayCollege} | <i class="fas fa-code-branch"></i> ${branchText} ${yearText ? `(${yearText})` : ""} | <i class="fas fa-tasks"></i> ${taskText}`;
 
         for (let i = 1; i <= MAX_TEAM_MEMBERS; i++) {
@@ -2473,7 +2355,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                             }
                             if (d.collegeName && d.collegeName.toLowerCase() !== "other") {
                                 syncHiddenSelectValue(d.collegeName);
-                                if (collegeSearchInput) collegeSearchInput.value = d.collegeName;
                             } else {
                                 clearCollegeSelection();
                             }
@@ -2640,99 +2521,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    if (collegeSearchInput) {
-        collegeSearchInput.addEventListener("focus", () => {
-            if (!collegesLoaded) return;
-            searchCollegesAndRender(collegeSearchInput.value);
-        });
-
-        collegeSearchInput.addEventListener("input", () => {
-            const inputValue = (collegeSearchInput.value || "").trim();
-            
-            const matchedOption = Array.from(collegeNameInput ? collegeNameInput.options : []).find(
-                opt => opt.value && opt.value.toLowerCase() === inputValue.toLowerCase() && opt.value.toLowerCase() !== "other"
-            );
-            if (matchedOption) {
-                syncHiddenSelectValue(matchedOption.value);
-                setFieldError(collegeSearchInput, "error-collegeName", "");
-            } else {
-                if (collegeNameInput) collegeNameInput.value = "";
+    if (collegeNameInput) {
+        collegeNameInput.addEventListener("change", () => {
+            if (collegeNameInput.value && collegeNameInput.value.toLowerCase() !== "other") {
+                setFieldError(collegeNameInput, "error-collegeName", "");
             }
-
-            clearTimeout(collegeFilterDebounce);
-            collegeFilterDebounce = setTimeout(() => {
-                searchCollegesAndRender(inputValue);
-            }, 180);
             saveFormData();
-        });
-
-        collegeSearchInput.addEventListener("keydown", (event) => {
-            if (event.key === "ArrowDown") {
-                event.preventDefault();
-                if (collegeDropdown.classList.contains("hidden")) {
-                    searchCollegesAndRender(collegeSearchInput.value);
-                    return;
-                }
-                setActiveCollegeOption(activeCollegeIndex + 1);
-                return;
-            }
-
-            if (event.key === "ArrowUp") {
-                event.preventDefault();
-                if (collegeDropdown.classList.contains("hidden")) return;
-                setActiveCollegeOption(activeCollegeIndex - 1);
-                return;
-            }
-
-            if (event.key === "Escape") {
-                hideCollegeDropdown();
-                return;
-            }
-
-            if (event.key !== "Enter") return;
-            if (collegeDropdown.classList.contains("hidden")) return;
-
-            event.preventDefault();
-            const typedVal = (collegeSearchInput.value || "").trim();
-            let selected = null;
-            if (activeCollegeIndex >= 0 && collegeDropdownItems[activeCollegeIndex]) {
-                selected = collegeDropdownItems[activeCollegeIndex];
-            } else {
-                const exact = collegeDropdownItems.find(c => c.name && c.name.toLowerCase() === typedVal.toLowerCase() && c.name.toLowerCase() !== "other");
-                if (exact) {
-                    selected = exact;
-                }
-            }
-            if (selected && selected.name && selected.name.toLowerCase() !== "other") {
-                selectCollege(selected);
-            } else {
-                hideCollegeDropdown();
-            }
-        });
-
-        collegeSearchInput.addEventListener("blur", () => {
-            const typed = (collegeSearchInput.value || "").trim();
-            const selected = (collegeNameInput ? collegeNameInput.value : "").trim();
-
-            if (typed && selected && typed.toLowerCase() === selected.toLowerCase() && selected.toLowerCase() !== "other") {
-                collegeSearchInput.value = selected;
-                setFieldError(collegeSearchInput, "error-collegeName", "");
-            } else if (typed) {
-                const matchedOption = Array.from(collegeNameInput ? collegeNameInput.options : []).find(
-                    opt => opt.value && opt.value.toLowerCase() === typed.toLowerCase() && opt.value.toLowerCase() !== "other"
-                );
-                if (matchedOption) {
-                    selectCollege({ name: matchedOption.value });
-                    setFieldError(collegeSearchInput, "error-collegeName", "");
-                } else {
-                    if (collegeNameInput) collegeNameInput.value = "";
-                    markInvalid(collegeSearchInput, "error-collegeName", "Please select your college from the list");
-                }
-            } else {
-                if (collegeNameInput) collegeNameInput.value = "";
-                setFieldError(collegeSearchInput, "error-collegeName", "");
-            }
-            window.setTimeout(hideCollegeDropdown, 200);
+            saveDraftToServer(true);
         });
     }
 
@@ -2809,18 +2604,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
-    document.addEventListener("click", (event) => {
-        const selector = document.getElementById("college-selector");
-        if (selector && !selector.contains(event.target)) {
-            hideCollegeDropdown();
-        }
-    });
-
     const allStep2Inputs = [
         fullNameInput,
         mobileInput,
         branchInput,
-        collegeSearchInput,
         collegeNameInput,
         otherCollegeInput,
         cityInput,
@@ -2845,8 +2632,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    registrationForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
+    async function handleStep2Continue(event) {
+        if (event) {
+            event.preventDefault();
+        }
 
         const { isValid, firstInvalidElement } = validateStep2(true);
 
@@ -2861,44 +2650,82 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
-        const mode = document.querySelector('input[name="participationMode"]:checked');
+        const origBtnText = btnNextStep ? btnNextStep.innerHTML : "";
+        if (btnNextStep) {
+            btnNextStep.disabled = true;
+            btnNextStep.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Continuing...';
+        }
 
-        const dupData = {
-            email: (emailInput.value || currentUser.email || "").trim(),
-            rollNumber: rollNumberInput.value.trim(),
-            mobile: mobileInput.value.trim(),
-        };
-        const dupResult = await checkFullDuplicate(dupData);
-        if (dupResult.hasDuplicate) {
-            dupResult.duplicates.forEach(d => {
-                if (d.field === "email") {
-                    alreadyRegistered.classList.remove("hidden");
-                    showToast("Duplicate Error", "This email address is already registered.");
-                } else if (d.field === "rollNumber") {
-                    setFieldError(rollNumberInput, "error-rollNumber", d.message || "Roll number already registered.");
-                    showToast("Duplicate Error", d.message || "Roll number already registered.");
-                } else if (d.field === "mobile") {
-                    setFieldError(mobileInput, "error-mobile", d.message || "Mobile number already registered.");
-                    showToast("Duplicate Error", d.message || "Mobile number already registered.");
+        try {
+            const mode = document.querySelector('input[name="participationMode"]:checked');
+
+            const dupData = {
+                email: (emailInput.value || (currentUser && currentUser.email) || "").trim(),
+                rollNumber: (rollNumberInput ? rollNumberInput.value : "").trim(),
+                mobile: (mobileInput ? mobileInput.value : "").trim(),
+            };
+
+            let dupResult = { hasDuplicate: false };
+            try {
+                dupResult = await checkFullDuplicate(dupData);
+            } catch (dupErr) {
+                console.warn("Duplicate check notice:", dupErr);
+            }
+
+            if (dupResult && dupResult.hasDuplicate) {
+                (dupResult.duplicates || []).forEach(d => {
+                    if (d.field === "email") {
+                        if (alreadyRegistered) alreadyRegistered.classList.remove("hidden");
+                        showToast("Duplicate Error", "This email address is already registered.");
+                    } else if (d.field === "rollNumber") {
+                        setFieldError(rollNumberInput, "error-rollNumber", d.message || "Roll number already registered.");
+                        showToast("Duplicate Error", d.message || "Roll number already registered.");
+                    } else if (d.field === "mobile") {
+                        setFieldError(mobileInput, "error-mobile", d.message || "Mobile number already registered.");
+                        showToast("Duplicate Error", d.message || "Mobile number already registered.");
+                    }
+                });
+                return;
+            }
+
+            saveFormData();
+            try {
+                await saveDraftToServer(true);
+            } catch (draftErr) {
+                console.warn("Draft auto-save notice:", draftErr);
+            }
+
+            if (mode && mode.value === "team") {
+                setupTeamStep();
+                showStep(3);
+            } else {
+                resetPaymentStepUI();
+                prepareTermsForPayment("individual");
+                try {
+                    await loadPublicSettings();
+                } catch (sErr) {
+                    console.warn("Public settings load warning:", sErr);
                 }
-            });
-            return;
+                updatePaymentSummary();
+                showStep(4);
+            }
+        } catch (navErr) {
+            console.error("Step navigation error:", navErr);
+            showToast("Navigation Error", "An error occurred while continuing. Please try again.");
+        } finally {
+            if (btnNextStep) {
+                btnNextStep.disabled = false;
+                btnNextStep.innerHTML = origBtnText || 'Continue <i class="fas fa-arrow-right"></i>';
+            }
         }
+    }
 
-        saveFormData();
-        await saveDraftToServer(true);
-
-        if (mode && mode.value === "team") {
-            setupTeamStep();
-            showStep(3);
-        } else {
-            resetPaymentStepUI();
-            prepareTermsForPayment("individual");
-            await loadPublicSettings();
-            updatePaymentSummary();
-            showStep(4);
-        }
-    });
+    if (registrationForm) {
+        registrationForm.addEventListener("submit", handleStep2Continue);
+    }
+    if (btnNextStep) {
+        btnNextStep.addEventListener("click", handleStep2Continue);
+    }
 
     btnAddMember.addEventListener("click", () => {
         if (teamMemberCount >= MAX_TEAM_MEMBERS) return;

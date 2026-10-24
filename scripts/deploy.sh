@@ -21,12 +21,22 @@ echo "Updating dependencies..."
 source venv/bin/activate
 pip install -r requirements.txt
 
-# Restart systemd service
-echo "Restarting service..."
-sudo systemctl restart $SERVICE_NAME
+# Restart systemd services (Cluster or single instance)
+echo "Restarting services..."
+if systemctl is-active --quiet hackathon@8000; then
+    sudo systemctl restart hackathon@8000 hackathon@8001
+    sudo systemctl reload nginx
+    echo "Cluster instances (8000 & 8001) and Nginx reloaded."
+else
+    sudo systemctl restart $SERVICE_NAME
+fi
 
 # Check status
 echo "Checking service status..."
-sudo systemctl status $SERVICE_NAME --no-pager
+if systemctl is-active --quiet hackathon@8000; then
+    sudo systemctl status hackathon@8000 hackathon@8001 --no-pager
+else
+    sudo systemctl status $SERVICE_NAME --no-pager
+fi
 
 echo "Deployment complete!"

@@ -1,19 +1,23 @@
 import multiprocessing
 import os
 
-# Server socket
-bind = "127.0.0.1:8000"
+# Server socket (Supports running multiple instances behind a load balancer)
+_host = os.getenv("SERVER_HOST", "127.0.0.1")
+_port = os.getenv("SERVER_PORT", "8000")
+bind = os.getenv("GUNICORN_BIND", f"{_host}:{_port}")
 backlog = 2048
 
 # Worker processes
-# Fix P-04: For async FastAPI, 2-4 workers is typically optimal.
-# (cpu_count * 2 + 1) creates too many workers on high-CPU servers, wasting RAM
-# and exhausting MongoDB Atlas connection limits. Cap at 4.
-workers = min(4, multiprocessing.cpu_count() * 2 + 1)
+# For async FastAPI behind a load balancer, 2-4 workers per instance is optimal.
+_default_workers = min(4, multiprocessing.cpu_count() * 2 + 1)
+workers = int(os.getenv("GUNICORN_WORKERS", _default_workers))
 worker_class = "uvicorn.workers.UvicornWorker"
 worker_connections = 1000
 timeout = 120
 keepalive = 2
+
+# Forwarded headers from Load Balancer / Reverse Proxy
+forwarded_allow_ips = os.getenv("FORWARDED_ALLOW_IPS", "127.0.0.1,::1")
 
 # Logging
 accesslog = "-"
@@ -21,8 +25,4 @@ errorlog = "-"
 loglevel = "info"
 
 # Process naming
-proc_name = "hackathon_api"
-
-# Environment variables
-# These are usually handled by the systemd service file or .env
-# env = {"APP_ENV": "production"}
+proc_name = f"hackathon_api_{_port}"

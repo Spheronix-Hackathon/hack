@@ -25,7 +25,7 @@ async def get_task_categories():
 
     for c in categories:
         raw_name = (c.get("name") or "").strip()
-        if not raw_name:
+        if not raw_name or raw_name.lower() == "other":
             continue
         key, display_name = get_canonical(raw_name)
         if key not in seen:
@@ -37,7 +37,6 @@ async def get_task_categories():
         ("bughunt", "Bug Hunt"),
         ("nativeapps", "Native Apps (Windows)"),
         ("ideathon", "Ideathon"),
-        ("other", "Other"),
     ]
     for key, display_name in defaults:
         if key not in seen:

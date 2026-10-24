@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waiting Room - Spheronix Hackathon Registration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #070913;
+            --card-bg: rgba(18, 22, 38, 0.85);
+            --card-border: rgba(99, 102, 241, 0.25);
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.4);
+            --secondary: #a855f7;
+            --success: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(168, 85, 247, 0.15) 0%, transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        .waiting-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            max-width: 540px;
+            width: 100%;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 40px var(--primary-glow);
+            position: relative;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .badge-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #c7d2fe;
+            margin-bottom: 1.5rem;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #22c55e;
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.3); }
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        /* Queue Position Display */
+        .queue-box {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 1.8rem 1.2rem;
+            margin-bottom: 1.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .position-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .position-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1;
+            margin-bottom: 0.8rem;
+            letter-spacing: -1px;
+            text-shadow: 0 0 25px rgba(99, 102, 241, 0.6);
+        }
+
+        .position-number.admitted {
+            color: var(--success);
+            font-size: 2.2rem;
+            text-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
+        }
+
+        /* Progress Bar */
+        .progress-track {
+            background: rgba(255, 255, 255, 0.06);
+            height: 10px;
+            border-radius: 100px;
+            overflow: hidden;
+            margin: 1.2rem 0 0.8rem 0;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 5%;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            border-radius: 100px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #e2e8f0;
+        }
+
+        .stat-lbl {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .instructions {
+            background: rgba(234, 179, 8, 0.1);
+            border: 1px solid rgba(234, 179, 8, 0.25);
+            border-radius: 14px;
+            padding: 0.85rem 1rem;
+            font-size: 0.85rem;
+            color: #fef08a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer-note {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="waiting-card">
+        <div class="badge-live">
+            <span class="pulse-dot"></span>
+            Virtual Waiting Room &bull; FIFO Queue
+        </div>
+
+        <h1>High-Traffic Queue</h1>
+        <p class="subtitle">Thousands of students are registering. To ensure smooth and fair access without server crashes, we are admitting <strong>100 students per second</strong>.</p>
+
+        <div class="queue-box">
+            <div class="position-label" id="statusLabel">Your Position in Line</div>
+            <div class="position-number" id="posNumber"><span class="spinner"></span></div>
+
+            <div class="progress-track">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-val" id="waitTime">~Calculating...</div>
+                    <div class="stat-lbl">Estimated Wait Time</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">100 / sec</div>
+                    <div class="stat-lbl">Admission Speed</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.1rem; flex-shrink: 0;"></i>
+            <span><strong>Do not close or refresh this page.</strong> Your place in line is preserved, and you will be automatically redirected to the registration form when your turn comes!</span>
+        </div>
+
+        <div class="footer-note">
+            Spheronix Hackathon Registration Protection &bull; Ticket ID: <span id="ticketDisplay">Connecting...</span>
+        </div>
+    </div>
+
+    <script>
+        // Extract ticket from URL or local storage
+        const urlParams = new URLSearchParams(window.location.search);
+        let ticketId = urlParams.get('ticket') || sessionStorage.getItem('queue_ticket');
+        let initialPosition = null;
+
+        const posNumber = document.getElementById('posNumber');
+        const statusLabel = document.getElementById('statusLabel');
+        const progressBar = document.getElementById('progressBar');
+        const waitTime = document.getElementById('waitTime');
+        const ticketDisplay = document.getElementById('ticketDisplay');
+
+        async function pollQueue() {
+            try {
+                const endpoint = ticketId 
+                    ? `/api/queue/status?ticket=${encodeURIComponent(ticketId)}`
+                    : `/api/queue/request`;
+
+                const res = await fetch(endpoint, { credentials: 'include' });
+                const data = await res.json();
+
+                if (data.ticket_id) {
+                    ticketId = data.ticket_id;
+                    sessionStorage.setItem('queue_ticket', ticketId);
+                    ticketDisplay.textContent = ticketId;
+                }
+
+                // Check if admitted
+                if (data.admitted) {
+                    statusLabel.textContent = "It's Your Turn!";
+                    posNumber.className = "position-number admitted";
+                    posNumber.innerHTML = "✓ Admitted!";
+                    progressBar.style.width = "100%";
+                    progressBar.style.background = "#10b981";
+                    waitTime.textContent = "Redirecting now...";
+                    
+                    // Store queue pass if returned
+                    if (data.token) {
+                        document.cookie = `queue_pass=${data.token}; path=/; max-age=1800; SameSite=Lax`;
+                    }
+
+                    setTimeout(() => {
+                        window.location.href = "/index.html";
+                    }, 800);
+                    return; // Stop polling
+                }
+
+                // Still waiting
+                const currentPos = data.position || 1;
+                if (!initialPosition || currentPos > initialPosition) {
+                    initialPosition = currentPos;
+                }
+
+                posNumber.textContent = `#${currentPos}`;
+                
+                // Calculate progress %
+                const progressPct = Math.min(95, Math.max(5, Math.round(((initialPosition - currentPos + 1) / initialPosition) * 100)));
+                progressBar.style.width = `${progressPct}%`;
+
+                // Estimated seconds
+                const sec = data.wait_seconds || Math.ceil(currentPos / 100);
+                waitTime.textContent = sec <= 1 ? "Under 1 second" : `~${sec} seconds`;
+
+            } catch (err) {
+                console.warn("Polling error:", err);
+            }
+
+            // Poll again in 1 second
+            setTimeout(pollQueue, 1000);
+        }
+
+        // Start polling on load
+        pollQueue();
+    </script>
+</body>
+</html>

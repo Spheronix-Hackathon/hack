@@ -8,13 +8,44 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>National Level Tech Hackathon 2026 - Spheronix</title>
-    <link rel="stylesheet" href="css/style.css?v=20260902-3">
+    <link rel="stylesheet" href="css/style.css?v=20261007-v2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Playfair+Display:wght@700;800;900&family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
+    <style>
+        /* Force remove any borders, frames, brackets, and shadows around QR code on mobile & desktop */
+        .qr-frame,
+        .upi-qr-wrapper .qr-frame {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+            background: #ffffff !important;
+        }
+        .qr-frame::before,
+        .qr-frame::after,
+        .upi-qr-wrapper .qr-frame::before,
+        .upi-qr-wrapper .qr-frame::after {
+            display: none !important;
+            content: none !important;
+            border: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .upi-qr-canvas-wrapper,
+        .upi-qr-canvas-wrapper canvas,
+        .upi-qr-canvas-wrapper img,
+        .upi-qr-img {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -188,14 +219,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="collegeName">College Name *</label>
-                                <div class="college-selector" id="college-selector">
-                                    <input type="text" id="collegeSearch" autocomplete="off"
-                                        placeholder="Search your college name" aria-label="Search college">
-                                    <div id="college-dropdown" class="college-dropdown hidden" role="listbox"
-                                        aria-label="College options"></div>
-                                </div>
-                                <select id="collegeName" name="collegeName" required class="hidden-select" tabindex="-1"
-                                    aria-hidden="true">
+                                <select id="collegeName" name="collegeName" required>
                                     <option value="" disabled selected>Select College</option>
                                 </select>
                                 <small class="error-text" id="error-collegeName"></small>
@@ -245,7 +269,6 @@
                                 <option value="Bug Hunt">Bug Hunt</option>
                                 <option value="Native Apps (Windows)">Native Apps (Windows)</option>
                                 <option value="Ideathon">Ideathon</option>
-                                <option value="Other">Other</option>
                             </select>
                             <small class="error-text" id="error-projectSelected"></small>
                             <div id="other-project-wrapper" class="hidden" style="margin-top: 0.5rem;">
@@ -426,7 +449,7 @@
                             </div>
 
                             <div class="upi-qr-wrapper">
-                                <div class="qr-frame">
+                                <div class="qr-frame" style="border: none !important; box-shadow: none !important; outline: none !important; border-radius: 0 !important; padding: 0 !important; background: #ffffff !important;">
                                     <div id="upi-qrcode-container" class="upi-qr-canvas-wrapper"></div>
                                     <img id="upi-qr-image" src="" alt="UPI Payment QR Code" class="upi-qr-img hidden">
                                     <div id="qr-loading-spinner" class="qr-spinner">
@@ -929,7 +952,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <script src="js/script.js?v=20260908-autosave-pin-to-pin-v4"></script>
+    <script src="js/script.js?v=20260926-continue-btn-fix"></script>
 </body>
 
 </html>

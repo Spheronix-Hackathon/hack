@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     global_db_name: str = Field(default="global_db", alias="GLOBAL_DB_NAME")
 
     cors_origins: str = Field(default="http://localhost:8000,http://127.0.0.1:8000", alias="CORS_ORIGINS")
+    trusted_hosts: str = Field(default="127.0.0.1,::1", alias="TRUSTED_HOSTS")
 
     secret_key: str = Field(default="change-this-secret", alias="SECRET_KEY")
     admin_api_key: str = Field(default="change-this-admin-key", alias="ADMIN_API_KEY")
@@ -47,6 +48,12 @@ class Settings(BaseSettings):
     # Supabase Configuration
     supabase_url: str = Field(default="", alias="SUPABASE_URL")
     supabase_anon_key: str = Field(default="", alias="SUPABASE_ANON_KEY")
+
+    # Virtual Waiting Room / FIFO High-Traffic Queue Configuration
+    queue_enabled: bool = Field(default=True, alias="QUEUE_ENABLED")
+    queue_admit_rate: int = Field(default=100, alias="QUEUE_ADMIT_RATE")  # Admitted per second
+    queue_max_active: int = Field(default=500, alias="QUEUE_MAX_ACTIVE")  # Max active registrations before queuing
+    queue_pass_ttl: int = Field(default=1800, alias="QUEUE_PASS_TTL")     # Seconds granted to complete registration
 
     @field_validator("app_env")
     @classmethod
@@ -90,6 +97,10 @@ class Settings(BaseSettings):
     @property
     def cors_origin_list(self) -> List[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+
+    @property
+    def trusted_hosts_list(self) -> List[str]:
+        return [host.strip() for host in self.trusted_hosts.split(",") if host.strip()]
 
 
 def get_settings() -> Settings:

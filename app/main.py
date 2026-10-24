@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
@@ -14,8 +14,9 @@ from slowapi.extension import _rate_limit_exceeded_handler
 from app.core.logging_utils import configure_logging
 from app.core.time_utils import ist_timestamp
 from app.core.rate_limit import limiter
+from app.core.waiting_room import waiting_room
 from app.database.mongodb import async_client, initialize_async_collections
-from app.routers import auth, colleges, payments, students, teams, tasks, contacts, exports, settings as public_settings
+from app.routers import auth, colleges, payments, students, teams, tasks, contacts, exports, settings as public_settings, queue
 from config.settings import get_settings
 
 settings = get_settings()
@@ -26,7 +27,9 @@ configure_logging(level=logging.INFO)
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     await initialize_async_collections()
+    await waiting_room.start()
     yield
+    await waiting_room.stop()
 
 
 # Fix M-04: Disable /docs and /redoc in production
@@ -55,8 +58,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# Fix H-07: Only trust 127.0.0.1 (Nginx) as reverse proxy, not all hosts
-app.add_middleware(ProxyHeadersMiddleware, trusted_hosts=["127.0.0.1", "::1"])
+# Trust local reverse proxy / load balancer hosts
+app.add_middleware(ProxyHeadersMiddleware, trusted_hosts=settings.trusted_hosts_list)
 
 
 @app.exception_handler(Exception)
@@ -72,8 +75,45 @@ async def unhandled_exception_handler(_: Request, exc: Exception):
 
 
 @app.get("/")
-async def read_root():
+async def read_root(request: Request):
+    if settings.queue_enabled:
+        token = request.cookies.get("queue_pass")
+        if not waiting_room.verify_token(token):
+            res = await waiting_room.request_entry()
+            if not res.get("admitted"):
+                return RedirectResponse(url=f"/waiting-room.html?ticket={res['ticket_id']}", status_code=307)
+            resp = RedirectResponse(url="/index.html", status_code=307)
+            resp.set_cookie(
+                key="queue_pass",
+                value=res["token"],
+                max_age=settings.queue_pass_ttl,
+                httponly=False,
+                samesite="lax",
+                secure=settings.is_production,
+            )
+            return resp
     return RedirectResponse(url="/index.html")
+
+
+@app.get("/index.html")
+async def read_index(request: Request):
+    if settings.queue_enabled:
+        token = request.cookies.get("queue_pass")
+        if not waiting_room.verify_token(token):
+            res = await waiting_room.request_entry()
+            if not res.get("admitted"):
+                return RedirectResponse(url=f"/waiting-room.html?ticket={res['ticket_id']}", status_code=307)
+            resp = FileResponse("static/index.html")
+            resp.set_cookie(
+                key="queue_pass",
+                value=res["token"],
+                max_age=settings.queue_pass_ttl,
+                httponly=False,
+                samesite="lax",
+                secure=settings.is_production,
+            )
+            return resp
+    return FileResponse("static/index.html")
 
 
 # Fix P-02: Health check now pings MongoDB to report real connectivity
@@ -96,6 +136,7 @@ async def health_check():
     }
 
 
+app.include_router(queue.router)
 app.include_router(auth.router)
 app.include_router(colleges.router)
 app.include_router(payments.router)
