@@ -4,7 +4,7 @@
 
 set -e
 
-APP_DIR="/opt/hackathon/app"
+APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 NGINX_CONF_SRC="$APP_DIR/scripts/nginx-loadbalancer.conf"
 NGINX_CONF_DEST="/etc/nginx/sites-available/hackathon.conf"
 SYSTEMD_SRC="$APP_DIR/scripts/hackathon@.service"

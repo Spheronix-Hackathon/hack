@@ -5,7 +5,7 @@
 
 set -e
 
-APP_DIR="/opt/hackathon/app"
+APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SERVICE_NAME="hackathon.service"
 
 echo "Starting deployment..."
